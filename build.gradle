@@ -1,0 +1,83 @@
+apply plugin: 'idea'
+group group
+version version
+
+wrapper {
+    gradleVersion = "${gradleVersion}"
+    distributionType = Wrapper.DistributionType.BIN
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+ext {
+    log4jVersion = '2.9.1'
+}
+
+buildscript {
+    repositories {
+        /*maven {
+            url "https://plugins.gradle.org/m2/"
+        }*/
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+    }
+    dependencies { classpath "com.github.jengelman.gradle.plugins:shadow:${gradleShadowPluginVersion}" }
+}
+
+subprojects {
+
+    repositories {
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+        maven { url "https://repository.cloudera.com/artifactory/cloudera-repos/" }
+        maven { url "https://simulation.tudelft.nl/maven/" }
+    }
+
+    apply plugin: 'java'
+    apply plugin: 'com.github.johnrengelman.shadow'
+    apply plugin: 'checkstyle'
+
+    sourceCompatibility = "${jdk8Version}"
+    targetCompatibility = "${jdk8Version}"
+    javadoc.destinationDir = file("${docFolderJava}")
+
+    dependencies {
+        testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+        //implementation "ch.qos.logback:logback-classic:$logbackVersion"
+        //implementation "ch.qos.logback:logback-core:$logbackVersion"
+        implementation "org.slf4j:jul-to-slf4j:$slf4jVersion"
+        implementation "org.apache.commons:commons-csv:1.5"
+    }
+
+    shadowJar {
+        zip64 true
+        mergeServiceFiles()
+    }
+    assemble.dependsOn shadowJar
+
+    javadoc { failOnError true }
+
+    test {
+        // useJUnit()
+        useJUnitPlatform()
+        maxHeapSize = '1G'
+        testLogging {
+            events "passed", "skipped", "failed" //, "standardOut", "standardError"
+            showExceptions true
+            exceptionFormat "full"
+            showCauses true
+            showStackTraces true
+            showStandardStreams = false
+        }
+    }
+}
+
+defaultTasks('clean', 'build', 'check', 'javadoc', 'shadowJar')

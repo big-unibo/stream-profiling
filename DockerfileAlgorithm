@@ -1,0 +1,28 @@
+FROM openjdk:8-jdk-slim
+
+WORKDIR /app
+
+COPY gradlew /app/gradlew
+COPY gradle /app/gradle
+COPY build.gradle /app/build.gradle
+COPY settings.gradle /app/settings.gradle
+COPY gradle.properties /app/gradle.properties
+COPY config/ /app/config
+COPY algorithm/ /app/algorithm
+
+# install the conda environment in myenv, using algorithm/src/main/python/requirementsPip3.txt
+RUN apt-get update \
+    && apt-get install -y python3 python3-pip \
+    && apt-get clean
+
+RUN pip3 install -r algorithm/src/main/python/requirementsPip3.txt
+# append to the file algorithm/src/main/resources/application.conf native_python: true and before add a new line
+RUN echo ", native_python = true" >> algorithm/src/main/resources/application.conf
+RUN mkdir tmp
+
+RUN chmod +x gradlew
+RUN ./gradlew algorithm:shadowJar --no-daemon -Dorg.gradle.daemon=false -Dorg.gradle.vfs.watch=false
+#expose port
+EXPOSE 5002
+
+CMD ["java", "-cp", "algorithm/build/libs/algorithm-0.1-all.jar", "it.unibo.big.asso.server.AlgorithmServer"]

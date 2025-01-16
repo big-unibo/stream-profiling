@@ -1,0 +1,20 @@
+FROM openjdk:8-jdk-slim
+
+WORKDIR /app
+COPY algorithm/ /app/algorithm
+
+#install latex and python utilities
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip dvipng ghostscript \
+    texlive-fonts-recommended texlive-latex-base texlive-latex-extra \
+    texlive-latex-recommended texlive-publishers texlive-science \
+    texlive-xetex cm-super gcc libpq-dev
+
+
+#create directory app test
+RUN mkdir /app/stream-profiling
+RUN mkdir /app/stream-analysis
+RUN mkdir /app/stream-analysis/graphs
+RUN mkdir /app/stream-profiling/graphs
+
+RUN pip3 install -r algorithm/src/main/python/requirementsPip3.txt

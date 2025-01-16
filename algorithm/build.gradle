@@ -1,0 +1,55 @@
+plugins {
+    id 'scala'
+    id 'com.github.alisiikh.scalastyle' version '3.4.1'
+}
+
+scalastyle {
+    config = file("${projectDir}/../config/scalastyle_config.xml")
+    verbose = true
+    failOnWarning = false
+}
+
+dependencies {
+    // This dependencies are required to use Spark on isi-bigcluster
+    implementation "org.scala-lang:scala-reflect:$scalaVersion"
+    implementation "org.scala-lang:scala-library:$scalaVersion"
+    implementation "org.scala-lang:scala-compiler:$scalaVersion"
+    implementation "org.apache.spark:spark-core_$scalaVersionMajor:$sparkVersion"
+    implementation "org.apache.spark:spark-sql_$scalaVersionMajor:$sparkVersion"
+    implementation "org.apache.spark:spark-streaming_$scalaVersionMajor:$sparkVersion"
+    implementation "org.apache.spark:spark-mllib_$scalaVersionMajor:$sparkVersion"
+    implementation "com.typesafe:config:$typesafeconfigVersion"
+    implementation "com.github.tototoshi:scala-csv_$scalaVersionMajor:$scalacsvVersion"
+    implementation "nz.ac.waikato.cms.weka:weka-stable:3.8.6"
+    // https://mvnrepository.com/artifact/io.github.elki-project/elki
+    implementation 'io.github.elki-project:elki:0.8.0'
+    implementation "com.github.haifengl:smile-core:$smileVersion"
+    implementation "com.github.haifengl:smile-scala_$scalaVersionMajor:$smileVersion"
+    //dependencies of smile
+    implementation "org.bytedeco:openblas:0.3.6-1.5.1"
+    implementation "org.bytedeco:javacv:1.5.1"
+    implementation 'org.bytedeco.javacpp-presets:openblas:0.3.5-1.4.4'
+    implementation 'org.bytedeco.javacpp-presets:openblas-platform:0.3.5-1.4.4'
+    implementation 'org.bytedeco:openblas:0.3.19-1.5.7'
+    implementation 'org.bytedeco:openblas-platform:0.3.19-1.5.7'
+    // hyperloglog
+    implementation "com.twitter:algebird-core_$scalaVersionMajor:0.13.10"
+    testImplementation "org.scalatest:scalatest_$scalaVersionMajor:$scalaTestVersion"
+    testImplementation "org.scalatest:scalatest-funsuite_$scalaVersionMajor:$scalaTestVersion"
+    // https://mvnrepository.com/artifact/org.openjfx/javafx
+    implementation "com.github.vagmcs:optimus_$scalaVersionMajor:3.2.4"
+    implementation "com.github.vagmcs:optimus-solver-oj_$scalaVersionMajor:3.2.4"
+    implementation "com.github.vagmcs:optimus-solver-lp_$scalaVersionMajor:3.2.4"
+    implementation "io.vertx:vertx-core:$vertxVersion"
+    implementation "io.vertx:vertx-web:$vertxVersion"
+}
+project.tasks.compileTestScala.scalaCompileOptions.additionalParameters = ["-target:jvm-1.8"]
+project.tasks.compileScala.scalaCompileOptions.additionalParameters = ["-target:jvm-1.8"]
+
+task scalaTest(dependsOn: ['testClasses'], type: JavaExec) {
+    main = 'org.scalatest.tools.Runner'
+    args = ['-R', 'build/classes/scala/test', '-o']
+    classpath = sourceSets.test.runtimeClasspath
+}
+
+test.dependsOn scalaTest // so that running "test" would run this first, then the JUnit tests

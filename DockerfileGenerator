@@ -1,0 +1,19 @@
+FROM openjdk:8-jdk-slim
+
+WORKDIR /app
+
+COPY gradlew /app/gradlew
+COPY gradle /app/gradle
+COPY build.gradle /app/build.gradle
+COPY settings.gradle /app/settings.gradle
+COPY gradle.properties /app/gradle.properties
+COPY config/ /app/config
+COPY generator/ /app/generator
+
+RUN chmod +x gradlew
+
+RUN ./gradlew generator:shadowJar --no-daemon -Dorg.gradle.daemon=false -Dorg.gradle.vfs.watch=false
+#expose port
+EXPOSE 5001
+
+CMD ["java", "-cp", "generator/build/libs/generator-0.1-all.jar", "it.unibo.big.asso.server.GeneratorServerKt"]

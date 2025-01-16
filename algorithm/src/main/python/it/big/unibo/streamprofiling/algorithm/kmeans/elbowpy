@@ -1,0 +1,11 @@
+import sys
+import numpy as np
+# pip install kneed or conda install kneed
+from kneed import KneeLocator
+elbowSensitivity=float(sys.argv[1])
+x = np.array(eval(${elbow.x}))
+y = np.array(eval(${elbow.y}))
+#https://www.kaggle.com/code/kevinarvai/knee-elbow-point-detection/notebook
+kneedle = KneeLocator(x, y, S=elbowSensitivity, curve='convex', direction='decreasing')
+print(-1 if kneedle.elbow == None else x[int(kneedle.elbow)])
+sys.exit(0)
