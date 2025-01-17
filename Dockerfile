@@ -12,6 +12,7 @@ COPY algorithm/ /app/algorithm
 COPY run_tests.sh /app/run_tests.sh
 
 RUN mkdir /app/stream-profiling
+RUN mkdir /app/stream-profiling-data
 RUN mkdir /app/stream-profiling/graphs
 
 RUN apt-get update \
@@ -25,6 +26,7 @@ RUN wget -r -np -nH --cut-dirs=1 --reject "index.html*" \
         https://big.csr.unibo.it/downloads/stream-profiling/ -P /app && \
     apt-get remove -y wget && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
 
+RUN mv /app/stream-profiling/* /app/stream-profiling-data
 # install the requirements
 RUN pip3 install -r algorithm/src/main/python/requirements.txt
 # append to the file algorithm/src/main/resources/application.conf native_python: true and before add a new line
