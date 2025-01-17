@@ -48,7 +48,7 @@ When we pass an algorithm to the [AlgorithmApp](algorithm/src/main/scala/it/unib
 The format of the string follows the following patterns (with = we indicate default parameter values):
 - **DSC** and **DSC+**
   - DSC(l=15,m=100,Metric=Silhouette,CENTROID,useHeuristicForReduceCoreset=false,mergeTau=-3,overlapTau=0.15,splitTau=30,insertDiff,elbowSensitivity=1)
-      - insertDiff not used now
+      - insertDiff not used in the implementation
       - CENTROID is reduce corest metric (CENTROID|STANDARD|HASH_LENGTH|HAMMING|JACCARD) STANDARD is manhattan as in CSCS
       - DSC(l,m,Metric) without local reclustering rules, just incremental
       - DSC(l,m,Metric,ReduceCorestMetric), just incremental
