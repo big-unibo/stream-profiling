@@ -2,15 +2,21 @@
 This repository contains the code for the paper "Dynamic Stream Clustering for Real-Time Schema Profiling with DSC+".
 
 Project structure:
-- `generator/` -- generators of stream data
-- `algorithm/` -- algorithms implementations
+- `generator/` -- generators of stream data (written in Kotlin)
+- `algorithm/` -- algorithms implementations (written is Scala)
 
 # Run the code
 Docker is required to run the tests.
-Open docker and from a terminal, if you use Windows use Git Bash, run the following commands:
+1. clone the repository in your pc
+2. open docker 
+3. open a terminal and run the following commands from the cloned repository root folder (if you use Windows use Git Bash)
 ```bash
+chmod +x tests.sh
 ./tests.sh
 ```
+
+The datasets used here are available at [https://big.csr.unibo.it/downloads/stream-profiling/](https://big.csr.unibo.it/downloads/stream-profiling/).
+
 
 ## Detail of the tests
 Each dataset is computed considering the following clustering algorithms:
@@ -212,6 +218,12 @@ The [algorithm](algorithm/src/main/scala/it/unibo/big/streamprofiling/algorithm)
     - The object [Settings](algorithm/src/main/scala/it/unibo/big/streamprofiling/algorithm/utils/Settings.scala) defines default parameters from a configuration file "application.conf" located in the resources folder.
 - [Metrics](algorithm/src/main/scala/it/unibo/big/streamprofiling/algorithm/Metrics.scala) contains the definition of metrics used to evaluate the results of clustering.
 
+In the folder [bash](algorithm/src/main/bash/it/unibo/big/streamprofiling) there are scripts for running tests and generating graphs.
+
+In the folder [python](algorithm/src/main/python/it/big/unibo/streamprofiling) there are some python scripts:
+- For generating the graph [paper](algorithm/src/main/python/it/big/unibo/streamprofiling/paper)
+- For compute the elbow method [kmeans](algorithm/src/main/python/it/big/unibo/streamprofiling/algorithm/kmeans)
+  This file is used from Scala code in order to find the best k value for the kmeans algorithm.
 ## Generator
 The [generator](generator/src/main/kotlin/it/unibo/big/streamprofiling/generator) folder contains all the necessary classes.
 
@@ -220,10 +232,7 @@ The [generator](generator/src/main/kotlin/it/unibo/big/streamprofiling/generator
 - [seed](generator/src/main/kotlin/it/unibo/big/streamprofiling/generator/seed) contains all the logic for managing seeds and generating datasets.
     - [Generation](generator/src/main/kotlin/it/unibo/big/streamprofiling/generator/seed/Generation.kt) contains the dataset generation logic.
 
-# The datasets
-The datasets used here are available at [https://big.csr.unibo.it/downloads/stream-profiling/](https://big.csr.unibo.it/downloads/stream-profiling/).
-
-## Generator
+# Generator details
 Datasets are generated using the `generator/` module.
 For use the generator (not needed for reproduce the results) you can run the following command:
 ```bash
