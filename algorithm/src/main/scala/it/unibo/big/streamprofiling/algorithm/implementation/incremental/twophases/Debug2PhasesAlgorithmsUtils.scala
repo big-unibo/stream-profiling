@@ -18,7 +18,7 @@ object Debug2PhasesAlgorithmsUtils {
   case class OperationDebugInfo(operation: TwoPhasesClusteringOperationType, numberOfElements: Int, elapsedTime: Double)
 
   /**
-   * Append a file "2phases.clusters" and "2phases.coresets" (for 2phases coreset use the commented code)
+   * Append a file "2phases.clusters"
    *
    * @param t time of computation
    * @param window window of computation

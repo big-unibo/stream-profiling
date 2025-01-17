@@ -83,8 +83,7 @@ object ClusteringExecution {
   }
 
   /**
-   * Aggregates data in the window, applying the aggregateFunction and trying various k values specified in the conf:
-   * from "clustering.k-min" to "clustering.k-max".
+   * Aggregates data in the window, applying the aggregateFunction and trying various k values
    * Under the hood various statics files are updated regarding:
    *  1. input data distribution
    *  2. clustering results and timing.

@@ -1,18 +1,12 @@
 #!/bin/sh
 # parameters:
-# - container if docker -> launch with docker, else locally
-# - built -> if true the containers are also built
 # - common_items
 # - probability
 # - lifetime
 # - unlifetime
 # - simulation_actions
-# - generate_simulation
-# - reset_previous_results
 # - file name
 # - algorithms
-container="$1"
-built="$3"
 seeds=10
 seeds_values=10
 # Original array of window lengths
@@ -22,8 +16,6 @@ test_fixed_wl=true #true if want to test fixed window length
 test_fixed_wp_percentage=true #true if want to test fixed window period percentage
 fixed_pane_percentace=10
 simulation_actions="STATIC"
-generate_simulation=$2 #true if want to generate seeds data
-reset_previous_results=true  #true if want to reset previous simulation clustering results data
 probability=0.9
 ws=1699389308172 # to change in case of different input file and different window start
 # Multiply each value in the array by 50
@@ -88,21 +80,8 @@ echo "lifetime $lifetime and duration $duration"
 finalwe=$((ws + duration))
 file_name="stream-profiling/windowTest/seeds" #give a simulation file name
 #############################
-if [ "$container" = "docker" ]; then
-  cd ../
-  cd ../../../../../../../../
-  if [ "$built" = "true" ]; then
-      echo "Skip build containers"
-  else
-    docker build -t generator -f DockerfileGenerator .
-    docker build -t algorithm -f DockerfileAlgorithm .
-  fi
-else
-  cd ../
-  source ./pythonSetup.sh
-  cd ../../../../../../../../
-  ./gradlew shadowJar
-fi
+
+cd ../../../../../../../../
 
 echo "Simulation with common = ${common_items} and probability = ${probability}"
 
@@ -120,21 +99,8 @@ for f in "$@";  do
 
   debugFolder="${simulationFileNameTmp}"
   echo "simulation $simulationFileName folder $debugFolder"
-  if $reset_previous_results ; then
-    rm -r "$debugFolder"
-  fi
+  rm -r "$debugFolder"
   mkdir -p "$debugFolder/logs"
-
-  #1-generation
-  if $generate_simulation ; then
-    if [ "$container" = "docker" ]; then
-        docker run -v /${PWD}/stream-profiling:/app/stream-profiling generator java -cp generator/build/libs/generator-0.1-all.jar it.unibo.big.streamprofiling.generator.WriteSimulationFromGenerationKt $seeds $f $simulation_actions $seeds_values $common_items $lifetime $unlifetime $probability $duration $file_name > "${debugFolder}/logs/simulator.log" 2>&1
-    else
-      java -cp generator/build/libs/generator-0.1-all.jar it.unibo.big.streamprofiling.generator.WriteSimulationFromGenerationKt $seeds $f $simulation_actions $seeds_values $common_items $lifetime $unlifetime $probability $duration $file_name > "${debugFolder}/logs/simulator.log" 2>&1
-    fi
-    echo "Sleep for generation..."
-    sleep 20s
-  fi
 
   echo "simulation.."
   #2-simulation
@@ -164,11 +130,7 @@ for f in "$@";  do
       we=$((wl + ws + wp * iterations)) #for reduce the number of iterations
       # Compare and assign the minimum
       we=$((we < finalwe ? we : finalwe))
-      if [ "$container" = "docker" ]; then
-         docker run -v /${PWD}/stream-profiling:/app/stream-profiling algorithm java -cp algorithm/build/libs/algorithm-0.1-all.jar it.unibo.big.streamprofiling.algorithm.app.AlgorithmApp $f $seeds "$simulationFileName" $wl $wp "$c" "false" $ws $we > "${debugFolder}/logs/${c}_clustering_wp${wp}_wl${wl}.log" 2>&1
-      else
-        java -cp algorithm/build/libs/algorithm-0.1-all.jar it.unibo.big.streamprofiling.algorithm.app.AlgorithmApp $f $seeds "$simulationFileName" $wl $wp "$c" "false" $ws $we > "${debugFolder}/logs/${c}_clustering_wp${wp}_wl${wl}.log" 2>&1
-      fi
+      java -cp algorithm/build/libs/algorithm-0.1-all.jar it.unibo.big.streamprofiling.algorithm.app.AlgorithmApp $f $seeds "$simulationFileName" $wl $wp "$c" "false" $ws $we > "${debugFolder}/logs/${c}_clustering_wp${wp}_wl${wl}.log" 2>&1
   done
   echo "End simulation..."
 done
