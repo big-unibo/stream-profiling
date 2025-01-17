@@ -20,7 +20,7 @@ Each dataset is computed considering the following clustering algorithms:
 - CSCS: the algorithm proposed in [Efficient Data Stream Clustering With Sliding Windows Based on Locality-Sensitive Hashing](https://ieeexplore.ieee.org/document/8501907/)
 - FEAC-S: the algorithm proposed in [An evolutionary algorithm for clustering data streams with a variable number of clusters](https://www.sciencedirect.com/science/article/pii/S0957417416304985)
 
-The tests runned consists on the script [run_tests](algorithm/src/main/bash/it/unibo/big/streamprofiling/run_tests.sh) that runs the following sub-tests:
+The tests runned consists on the script [run_tests](run_tests.sh) that runs the following sub-tests:
 - [algoParameters](algorithm/src/main/bash/it/unibo/big/streamprofiling/algoParameters.sh) that runs the clustering algorithms on the static dataset changing the DSC's algorithms parameters.
 - [windowPeriodsParameters](algorithm/src/main/bash/it/unibo/big/streamprofiling/windowParameters.sh) that runs the clustering algorithms on the static dataset changing the window parameters.
 - [scenarios](algorithm/src/main/bash/it/unibo/big/streamprofiling/scenarios.sh) that runs the clustering algorithms on each scenario (static, fadein, fadeout, slide, split, merge).

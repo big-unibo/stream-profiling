@@ -4,14 +4,8 @@
 common_items=1
 probability=0.9
 
-#!/bin/sh
-
-# Fixed parameters
-common_items=1
-probability=0.9
-
 # Define the algorithms
-algorithms=(
+set_algorithms=(
     "FEACS(20,10,10,0.5)"
     "OMRkpp(20,Silhouette)"
     "OMRkpp(20,SSE)"
@@ -25,22 +19,10 @@ algorithms=(
     "CSCS(15,100,SSE,20)"
 )
 
-# Define a function to run all phases with the given parameters
-run_phases() {
-    local common_items=$1
-    local probability=$2
-    local algorithms=$3
-
-    bash static.sh $common_items $probability "$algorithms"
-    bash fadein.sh $common_items $probability "$algorithms"
-    bash merge.sh $common_items $probability "$algorithms"
-    bash split.sh $common_items $probability "$algorithms"
-    bash fadeout.sh $common_items $probability "$algorithms"
-    bash slide.sh $common_items $probability "$algorithms"
-}
-
-# Convert algorithms array to a space-separated string
-algorithms_string="${algorithms[@]}"
-
-# Run complete scenarios simulation
-run_phases $common_items $probability "$algorithms_string"
+cd scenarios
+bash static.sh $common_items $probability "${set_algorithms[@]}"
+bash fadein.sh $common_items $probability "${set_algorithms[@]}"
+bash merge.sh $common_items $probability "${set_algorithms[@]}"
+bash split.sh $common_items $probability "${set_algorithms[@]}"
+bash fadeout.sh $common_items $probability "${set_algorithms[@]}"
+bash slide.sh $common_items $probability "${set_algorithms[@]}"

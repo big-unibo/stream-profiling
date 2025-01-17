@@ -46,5 +46,4 @@ set_algorithms=($(echo "${algorithms[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ')
 
 echo "${set_algorithms[@]}"
 
-cd ../common
-bash abstractSimulation.sh ${common_items} ${probability} ${lifetime} ${unlifetime} ${simulation_actions} ${file_name} "${set_algorithms[@]}"
+bash common/abstractSimulation.sh ${common_items} ${probability} ${lifetime} ${unlifetime} ${simulation_actions} ${file_name} "${set_algorithms[@]}"
