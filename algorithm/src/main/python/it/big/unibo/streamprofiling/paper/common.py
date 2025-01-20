@@ -63,7 +63,7 @@ def get_m(alg):
 
 def get_df_wp():
     df = pd.read_csv("stream-profiling/windowTest/seeds_SIM/frequency_statistics.csv", sep=',', quotechar='"', decimal='.')
-    # considero i record elaborati rispetto alla frequenza
+    # I consider the processed records in relation to the frequency
     df["records_elaborated"] = df["windowPeriod"] / df["data_frequency"] * df["seeds"]
     # convert column to integer
     df["records_elaborated"] = df["records_elaborated"].astype(int)
@@ -149,7 +149,7 @@ def sort_labels_and_handles(labels, handles):
     return zip(*sorted_labels_and_handles)
 
 def put_lines_on_legend(ax):
-    # Sistema legenda, considerando la linea sopra al punto
+    # Adjust the legend, considering the line above the point
     handles, labels = ax.get_legend_handles_labels()
     newLabels, newHandles = [], []
     for handle, label in zip(handles, labels):

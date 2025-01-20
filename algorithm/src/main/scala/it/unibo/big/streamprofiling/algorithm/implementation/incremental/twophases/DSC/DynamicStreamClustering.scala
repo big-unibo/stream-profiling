@@ -192,7 +192,7 @@ class DynamicStreamClustering(name: String, windowLength: Long, windowPeriod: Lo
           val time = System.currentTimeMillis()
           val actualMetric = Silhouette.compute(newClusteringResult, vectorSpace)
           /*val proceed = if(operationForReduceClustersNumber) {
-            //in caso di merge per ridurre k il confronto è valido solo se non si scende sotto la soglia worst case
+            //In case of a merge to reduce k, the comparison is valid only if it doesn't fall below the worst-case threshold
             val proceedSpecialMerge = (oldClusteringResultSilhouette - actualMetric) >= worstCaseSSDecrese
             LOGGER.debug(s"Actual Silhouette without the ${worstCluster.get.toString} (FORCED) was in the window $oldClusteringResultSilhouette, can proceed $proceedSpecialMerge.")
             proceedSpecialMerge
