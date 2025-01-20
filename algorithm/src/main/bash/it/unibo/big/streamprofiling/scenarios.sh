@@ -19,10 +19,9 @@ set_algorithms=(
     "CSCS(15,100,SSE,20)"
 )
 
-cd scenarios
-bash static.sh $common_items $probability "${set_algorithms[@]}"
-bash fadein.sh $common_items $probability "${set_algorithms[@]}"
-bash merge.sh $common_items $probability "${set_algorithms[@]}"
-bash split.sh $common_items $probability "${set_algorithms[@]}"
-bash fadeout.sh $common_items $probability "${set_algorithms[@]}"
-bash slide.sh $common_items $probability "${set_algorithms[@]}"
+bash scenarios/static.sh $common_items $probability "${set_algorithms[@]}"
+bash scenarios/fadein.sh $common_items $probability "${set_algorithms[@]}"
+bash scenarios/merge.sh $common_items $probability "${set_algorithms[@]}"
+bash scenarios/split.sh $common_items $probability "${set_algorithms[@]}"
+bash scenarios/fadeout.sh $common_items $probability "${set_algorithms[@]}"
+bash scenarios/slide.sh $common_items $probability "${set_algorithms[@]}"
