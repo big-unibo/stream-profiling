@@ -21,8 +21,6 @@ dependencies {
     implementation "com.typesafe:config:$typesafeconfigVersion"
     implementation "com.github.tototoshi:scala-csv_$scalaVersionMajor:$scalacsvVersion"
     implementation "nz.ac.waikato.cms.weka:weka-stable:3.8.6"
-    // https://mvnrepository.com/artifact/io.github.elki-project/elki
-    implementation 'io.github.elki-project:elki:0.8.0'
     implementation "com.github.haifengl:smile-core:$smileVersion"
     implementation "com.github.haifengl:smile-scala_$scalaVersionMajor:$smileVersion"
     //dependencies of smile
