@@ -170,9 +170,9 @@ object SchemaModeling {
   /**
    * Schema read in a window
    *
-   * @param stringValues values of the schema (i.e. the payload of the received kafka message)
+   * @param stringValues values of the schema (i.e. the payload of the received message)
    * @param timestamp the timestamp the schema has been received
-   * @param seedName  the seed of the received schema (i.e. the key of the received kafka message)
+   * @param seedName  the seed of the received schema (i.e. the key of the received message)
    */
   case class TimestampedSchema(private val stringValues: Set[String], timestamp: Timestamp, seedName: String) extends SchemaWithTimestamp {
     override val values: Map[String, Double] = stringValues.map(s => s -> 1D).toMap
